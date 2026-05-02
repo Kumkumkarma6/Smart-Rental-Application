@@ -1,0 +1,54 @@
+{% extends 'navigation.html' %}
+{% block body %}
+
+<div class="container" style="max-width: 900px; margin: 40px auto;">
+    <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <h2 style="margin-bottom: 20px; color: #20305E;">Rent Prediction</h2>
+        <p style="color: #515A6E; margin-bottom: 30px;">Use historical listing data to estimate a fair rent for your room.</p>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <div style="display: grid; gap: 18px;">
+                <div>
+                    <label style="font-weight: 600;">State</label>
+                    <select name="state" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px;">
+                        <option value="">Choose state</option>
+                        {% for state in state_list %}
+                        <option value="{{state.state}}" {% if state.state == selected_state %}selected{% endif %}>{{state.state}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight: 600;">District</label>
+                    <select name="dist" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px;">
+                        <option value="">Choose district</option>
+                        {% for dist in dist_list %}
+                        <option value="{{dist.dist}}" {% if dist.dist == selected_dist %}selected{% endif %}>{{dist.dist}} ({{dist.state.state}})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight: 600;">Listing title</label>
+                    <input type="text" name="title" placeholder="e.g. Single room in Pune" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px;">
+                </div>
+                <div>
+                    <label style="font-weight: 600;">Short description</label>
+                    <textarea name="desc" rows="4" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px;" placeholder="e.g. Furnished, near metro."></textarea>
+                </div>
+                <div>
+                    <button type="submit" style="background:#2f80ed; color:white; padding:12px 22px; border:none; border-radius:10px; cursor:pointer;">Estimate Rent</button>
+                </div>
+            </div>
+        </form>
+
+        {% if estimate is not None %}
+            <div style="margin-top: 30px; padding: 20px; background: #f0f7ff; border-radius: 14px;">
+                <h3 style="margin-top:0; color:#1a202c;">Estimated fair rent</h3>
+                <p style="font-size: 28px; font-weight: 700; color:#2d3748;">₹{{ estimate }} / month</p>
+                <p style="color: #4a5568;">This estimate is based on similar accepted listings in the same city or district.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

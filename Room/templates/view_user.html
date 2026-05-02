@@ -1,0 +1,161 @@
+{% extends 'navigation.html' %}
+{% block body %}
+<style>
+body {
+  background: linear-gradient(135deg, #f6f9ff, #eef4ff);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== Header ===== */
+.container h2 {
+  background-color: #20305E;
+  color: white;
+  padding: 14px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* ===== Table Styling ===== */
+.table {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 25px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.table thead {
+  background: linear-gradient(90deg, #20305E, #2f80ed);
+  color: white;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.table th, .table td {
+  text-align: center;
+  padding: 14px;
+  vertical-align: middle;
+  font-size: 15px;
+  color: #333;
+  border-color: #f0f0f0;
+}
+
+.table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f0f7ff;
+  transform: scale(1.01);
+}
+
+/* ===== Buttons ===== */
+.button {
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 2px;
+}
+
+/* Edit Button */
+.button1 {
+  background-color: #007bff;
+}
+.button1:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Delete Button */
+.button2 {
+  background-color: #dc3545;
+}
+.button2:hover {
+  background-color: #a71d2a;
+  transform: scale(1.05);
+}
+
+/* Staff User Badge */
+.staff-badge {
+  background-color: #28a745;
+  color: white;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-block;
+  box-shadow: 0 3px 8px rgba(40,167,69,0.3);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .container h2 {
+    font-size: 18px;
+  }
+  .table th, .table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+  .button {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+</style>
+
+<br><br>
+<center>
+  <div class="container">
+    <h2>View User</h2>
+  </div>
+</center>
+
+<div class="container">
+  <table class="table table-bordered" width="100%" id="myTable">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Full Name</th>
+        <th>Email ID</th>
+        <th>Gender</th>
+        <th>Address</th>
+        <th>Contact</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in data %}
+      <tr>
+        <td>{{ i.user.username }}</td>
+        <td>{{ i.user.first_name }} {{ i.user.last_name }}</td>
+        <td>{{ i.user.email }}</td>
+        <td>{{ i.gen }}</td>
+        <td>{{ i.add }}</td>
+        <td>{{ i.mobile }}</td>
+
+        {% if i.user.is_staff %}
+          <td><span class="staff-badge">Staff User</span></td>
+        {% else %}
+          <td>
+            <a href="{% url 'edit_user' i.id %}">
+              <button class="button button1">Edit</button>
+            </a>
+            <a href="{% url 'delete_user' i.id %}">
+              <button class="button button2">Delete</button>
+            </a>
+          </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

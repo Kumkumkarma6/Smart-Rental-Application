@@ -1,0 +1,271 @@
+{% extends 'navigation.html' %}
+{% block body %}
+
+<style>
+.card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #6AC8FF 0%, #3498db 100%);
+    padding: 20px;
+    border: none;
+}
+
+.card-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-body {
+    padding: 30px;
+    background: #f8f9fa;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border: 2px solid #e3e3e3;
+    border-radius: 10px;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.1);
+}
+
+.form-check-inline {
+    margin-right: 15px;
+}
+
+.form-check-input {
+    margin-top: 3px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6AC8FF 0%, #3498db 100%);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.form-control-file {
+    padding: 10px 0;
+}
+
+textarea.form-control {
+    min-height: 100px;
+}
+
+/* Add animation to form inputs */
+.form-control:focus {
+    transform: translateY(-2px);
+}
+
+/* Custom styling for date input */
+input[type="date"] {
+    color: #2c3e50;
+}
+
+/* Custom radio button styling */
+.form-check-input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+}
+
+.form-check-label {
+    padding-left: 5px;
+    color: #2c3e50;
+}
+
+/* Responsive padding adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 20px;
+    }
+}
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3><strong>Register User Account</strong></h3>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                        {% if error == 'success' %}
+                            <div class="alert alert-success" role="alert">
+                                Account created successfully. You can now sign in.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <form method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label>First Name:</label>
+                            <input type="text" class="form-control" placeholder="Enter first name" name="fname" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Last Name:</label>
+                            <input type="text" class="form-control" placeholder="Enter last name" name="lname" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Username:</label>
+                            <input type="text" class="form-control" placeholder="Enter username" name="uname" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" class="form-control" placeholder="Enter password" name="pwd" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Gender:</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="male" value="Male" required>
+                                <label class="form-check-label">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="male" value="Female" required>
+                                <label class="form-check-label">Female</label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" class="form-control" placeholder="Enter email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mobile:</label>
+                            <input type="text" class="form-control" placeholder="Enter mobile number" name="mobile" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Date of Birth:</label>
+                            <input type="date" class="form-control" name="birth" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Full Address:</label>
+                            <textarea class="form-control" placeholder="Enter Address" name="add" required rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Profile Image:</label>
+                            <input type="file" class="form-control-file" name="img" required>
+                        </div>
+
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if error %}
+<script>
+    alert('Logged in Successfully');
+    window.location='{% url 'signin' %}';
+</script>
+{% endif %}
+
+{% endblock %}
+</style>
+
+{% if error %}
+<script>
+  alert('Logged in Successfully');
+  window.location='{% url 'signin' %}';
+</script>
+{% endif %}
+
+<div class="register-container">
+  <h3><strong>Register User Account</strong></h3>
+  <hr>
+  <form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label>First Name:</label>
+    <input type="text" placeholder="Enter first name" name="fname" required>
+
+    <label>Last Name:</label>
+    <input type="text" placeholder="Enter last name" name="lname" required>
+
+    <label>User Name:</label>
+    <input type="text" placeholder="Enter user name" name="uname" required>
+
+    <label>Password:</label>
+    <input type="password" placeholder="Enter password" name="pwd" required>
+
+    <label>Gender:</label>
+    <div class="gender-group">
+      <label><input type="radio" value="Male" name="male" required> Male</label>
+      <label><input type="radio" value="Female" name="male" required> Female</label>
+    </div>
+
+    <label>Email:</label>
+    <input type="email" placeholder="Enter email" name="email" required>
+
+    <label>Mobile:</label>
+    <input type="text" placeholder="Enter mobile number" name="mobile" required>
+
+    <label>Date of Birth:</label>
+    <input type="date" name="birth" required>
+
+    <label>Full Address:</label>
+    <input type="text" placeholder="Enter Address" name="add" required>
+
+    <label>Profile Image:</label>
+    <input type="file" name="img" required>
+
+    <input type="submit" value="Register">
+  </form>
+</div>

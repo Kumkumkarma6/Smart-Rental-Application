@@ -1,0 +1,306 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<style>
+.property-listings {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f6f9fc, #edf2f7);
+    min-height: 100vh;
+}
+
+.listings-header {
+    text-align: center;
+    margin-bottom: 50px;
+    background: linear-gradient(135deg, #20305E, #4834d4);
+    padding: 40px 20px;
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.location-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 15px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.location-subtitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #FFC107;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.location-subtitle i {
+    font-size: 2rem;
+}
+
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.property-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.property-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.property-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.property-card:hover .property-image img {
+    transform: scale(1.1);
+}
+
+.property-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #2ecc71;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.property-content {
+    padding: 25px;
+}
+
+.property-title {
+    font-size: 1.8rem;
+    color: #1a202c;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.property-details {
+    display: grid;
+    gap: 15px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #2d3748;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.detail-item i {
+    width: 24px;
+    color: #6366f1;
+    font-size: 1.2rem;
+}
+
+.property-owner {
+    margin: 25px 0;
+    padding: 15px;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.owner-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #6366f1;
+}
+
+.owner-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.owner-link {
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.15rem;
+    transition: color 0.3s ease;
+}
+
+.owner-link:hover {
+    color: #6366f1;
+}
+
+@media (max-width: 768px) {
+    .listings-grid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .location-title {
+        font-size: 2.5rem;
+    }
+
+    .location-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .property-card {
+        margin: 0 10px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.property-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+  .room-no-image,
+  .room-owner-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 180px;
+    border-radius: 12px;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .room-owner-no-image {
+    width: 35px;
+    height: 35px;
+    font-size: 10px;
+    border-radius: 50%;
+    border: 2px solid #20305E;
+    padding: 3px;
+  }
+</style>
+
+<div class="property-listings">
+    <div class="listings-header">
+        <h1 class="location-title">Available Properties</h1>
+        <div class="location-subtitle">
+            <i class="fas fa-map-marker-alt"></i>
+            {{dist.name}}, {{dist.state.name}}
+        </div>
+    </div>
+
+    <div class="listings-grid">
+        {% for i in room %}
+        {% if i.status.status == "accepted" %}
+        <div class="property-card">
+            <div class="property-image">
+                <a href="{% url 'detail' i.id %}">
+                    {% if i.featured_image and i.featured_image.url %}
+                        <img src="{{ i.featured_image.url }}" alt="{{ i.title }}">
+                    {% else %}
+                        <div class="room-no-image">No Image</div>
+                    {% endif %}
+                </a>
+                <div class="property-status">
+                    <i class="fas fa-check-circle"></i>
+                    Available
+                </div>
+            </div>
+            
+            <div class="property-content">
+                <h2 class="property-title">{{ i.title }}</h2>
+                
+                <div class="property-details">
+                    <div class="detail-item">
+                        <i class="fas fa-align-left"></i>
+                        <span>{{ i.description }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹{{ i.rent }} / month</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-city"></i>
+                        <span>{{ i.area.name if i.area else 'N/A' }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ i.address }}</span>
+                        {% if i.latitude and i.longitude %}
+                          <a href="https://www.google.com/maps/search/?api=1&query={{ i.latitude }},{{ i.longitude }}" target="_blank" style="margin-left:8px; color:#2f80ed; text-decoration:none;"><i class="fas fa-globe"></i> View Map</a>
+                        {% endif %}
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ i.landlord.profile.phone }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Owner: {{ i.landlord.get_full_name|default:i.landlord.username }}</span>
+                    </div>
+                </div>
+
+                <div class="property-owner">
+                    <div class="owner-image">
+                        {% if i.landlord.profile.profile_picture and i.landlord.profile.profile_picture.url %}
+                            <img src="{{ i.landlord.profile.profile_picture.url }}" alt="Owner">
+                        {% else %}
+                            <div class="room-owner-no-image">No Owner Image</div>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'owner' i.id %}" class="owner-link">
+                        View Owner Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

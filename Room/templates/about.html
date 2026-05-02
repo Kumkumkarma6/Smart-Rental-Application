@@ -1,0 +1,391 @@
+{% extends 'navigation.html' %}
+{% block body %}
+{% load static %} 
+<style>
+/* ===== About Container ===== */
+.about-container {
+  background: #ffffff;
+  padding: 50px 20px;
+  margin-top: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* ===== About Header ===== */
+.about-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.about-header h1 {
+  font-size: 36px;
+  color: #20305E;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+.about-header h1 span {
+  color: #e74c3c;
+}
+
+.about-header h1::after {
+  content: "";
+  width: 80px;
+  height: 3px;
+  background-color: #e74c3c;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.about-header p {
+  color: #555;
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+/* ===== About Content ===== */
+.about-content p {
+  text-align: justify;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #444;
+}
+
+.about-image {
+  width: 85%;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.about-image:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Data Section ===== */
+.data-section {
+  margin-top: 60px;
+}
+
+.data-section h2 {
+  color: #20305E;
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.stats-card {
+  background: linear-gradient(135deg, #20305E, #2f80ed);
+  color: white;
+  padding: 25px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 220px;
+  margin: auto;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.25);
+}
+
+.stats-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffb347;
+}
+
+.stats-card p {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .about-header h1 {
+    font-size: 28px;
+  }
+
+  .about-content {
+    text-align: center;
+  }
+
+  .about-image {
+    margin-top: 20px;
+    width: 95%;
+  }
+}
+/* ===== About Section Wrapper ===== */
+.about-wrapper {
+  margin-top: 60px;
+  padding: 40px 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Image Section ===== */
+.about-side-image {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s ease;
+}
+
+.about-side-image:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Text Section ===== */
+.about-text {
+  padding: 20px;
+}
+
+.about-text h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #20305E;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.about-text h2 span {
+  color: #e74c3c;
+}
+
+.about-text h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: #e74c3c;
+  margin-top: 8px;
+  border-radius: 2px;
+}
+
+.about-text p {
+  font-size: 16px;
+  color: #444;
+  line-height: 1.8;
+  text-align: justify;
+  margin-bottom: 18px;
+}
+
+/* ===== Button Style ===== */
+.learn-more-btn {
+  background: linear-gradient(90deg, #20305E, #2f80ed);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.learn-more-btn:hover {
+  background: linear-gradient(90deg, #e74c3c, #ff7675);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .about-wrapper {
+    text-align: center;
+  }
+
+  .about-text {
+    margin-top: 30px;
+  }
+
+  .about-text h2 {
+    font-size: 28px;
+  }
+
+  .about-side-image {
+    width: 90%;
+  }
+}
+</style>
+
+<!-- About Section -->
+<div class="about-container container">
+  <div class="about-header">
+    <h1>About <span>SearchingYourHome</span></h1>
+    <p>Your trusted platform for smart real estate discovery and property insights.</p>
+  </div>
+
+  <div class="row about-content">
+    <div class="col-md-8">
+      <p>
+        <b>SearchingYourHome</b> is an online platform transforming real estate trade into a faster, smarter, and more transparent process. 
+        We help you find the perfect property — whether buying, renting, or investing — while ensuring a smooth and trustworthy experience.
+      </p>
+      <p>
+        Our listings cover every aspect of property discovery, from locality and budget to amenities and nearby landmarks. 
+        With data-driven insights, we help users compare, analyze, and make confident property decisions across top cities like 
+        <b>Delhi, Mumbai, Bangalore, Pune, Chennai, Hyderabad, Kolkata</b> and more.
+      </p>
+      <p>
+        We also provide insights into market trends, upcoming projects, and builder reputation — making <b>SearchingYourHome</b> 
+        your one-stop destination for property discovery and analytics.
+      </p>
+    </div>
+     <div class="about-wrapper container">
+  <div class="row align-items-center">
+    <!-- Left Image Section -->
+    <div class="col-md-5 text-center">
+      <img src="{% static 'images/home10.jpg' %}" alt="About SearchingYourHome" class="about-side-image">
+    </div>
+
+    <!-- Right Content Section -->
+    <div class="col-md-7 about-text">
+      <p>
+        Welcome to <b>SearchingYourHome</b> — your trusted real estate discovery platform built to simplify the property search experience.  
+        Whether you are planning to buy your dream house, rent a comfortable apartment, or invest in property, we provide a smarter, faster, and transparent way to find the best fit.
+      </p>
+      <p>
+        Our mission is to connect people with the right property through advanced data insights and real-time listings.  
+        With thousands of verified ads across major cities like <b>Delhi, Mumbai, Pune, Bangalore, Chennai</b>, and more — we ensure your property search is effortless and reliable.
+      </p>
+      <p>
+        We don’t just show listings; we show opportunities.  
+        From price trends to locality comparisons, <b>SearchingYourHome</b> provides in-depth analytics that help you make informed property decisions with confidence.
+      </p>
+      {% comment %} <button class="learn-more-btn">Learn More</button> {% endcomment %}
+    </div>
+  </div>
+</div>
+    <div class="col-md-4 text-center">
+      {% comment %} <img src="{% static 'images/home10.jpg' %}" class="about-image" alt="Real Estate Image"> {% endcomment %}
+    </div>
+  </div>
+
+  <!-- Data Analysis / Stats Section (enhanced dashboard) -->
+  <div class="data-section">
+    <div class="row stats-row">
+      <div class="col-md-3 col-sm-6">
+        <div class="stats-card">
+          <h3>25K+</h3>
+          <p>Active Listings</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="stats-card">
+          <h3>120+</h3>
+          <p>Cities Covered</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="stats-card">
+          <h3>8K+</h3>
+          <p>Verified Owners</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="stats-card">
+          <h3>15%</h3>
+          <p>Annual Growth</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Small analytics panels -->
+    <div class="analytics-panel" style="max-width:1200px;margin:40px auto;">
+      <h2 style="text-align:center;color:#20305E;font-weight:700;margin-bottom:20px;">Quick Analytics</h2>
+      <div class="analytics-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div class="analytics-card" style="background:white;padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+          <h4 style="margin:0 0 12px;color:#1a202c;font-weight:700;">Listings by Top Cities</h4>
+          <div class="progress-row" style="display:flex;flex-direction:column;gap:10px;">
+            <div class="city-line"><strong>Delhi</strong>
+              <div class="progress" style="background:#eef2ff;border-radius:8px;overflow:hidden;margin-top:6px;height:12px;">
+                <div class="progress-bar" style="width:78%;background:linear-gradient(90deg,#6366f1,#4f46e5);height:100%;"></div>
+              </div>
+            </div>
+            <div class="city-line"><strong>Mumbai</strong>
+              <div class="progress" style="background:#eef2ff;border-radius:8px;overflow:hidden;margin-top:6px;height:12px;">
+                <div class="progress-bar" style="width:65%;background:linear-gradient(90deg,#ff3366,#ff6b6b);height:100%;"></div>
+              </div>
+            </div>
+            <div class="city-line"><strong>Bengaluru</strong>
+              <div class="progress" style="background:#eef2ff;border-radius:8px;overflow:hidden;margin-top:6px;height:12px;">
+                <div class="progress-bar" style="width:58%;background:linear-gradient(90deg,#10b981,#059669);height:100%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-card" style="background:white;padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+          <h4 style="margin:0 0 12px;color:#1a202c;font-weight:700;">Monthly Growth</h4>
+          <div style="display:flex;gap:12px;align-items:flex-end;height:140px;padding-top:10px;">
+            <div style="flex:1;text-align:center;"><div style="height:40px;background:#4f46e5;border-radius:6px;width:70%;margin:0 auto;"></div><small>Jan</small></div>
+            <div style="flex:1;text-align:center;"><div style="height:60px;background:#ff6b6b;border-radius:6px;width:70%;margin:0 auto;"></div><small>Feb</small></div>
+            <div style="flex:1;text-align:center;"><div style="height:80px;background:#6366f1;border-radius:6px;width:70%;margin:0 auto;"></div><small>Mar</small></div>
+            <div style="flex:1;text-align:center;"><div style="height:100px;background:#10b981;border-radius:6px;width:70%;margin:0 auto;"></div><small>Apr</small></div>
+            <div style="flex:1;text-align:center;"><div style="height:90px;background:#f59e0b;border-radius:6px;width:70%;margin:0 auto;"></div><small>May</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer" style="background:#0f1724;color:#cbd5e1;padding:40px 20px;margin-top:40px;">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px;align-items:start;">
+    <div>
+      <h3 style="color:white;margin-top:0;">SearchingYourHome</h3>
+      <p style="margin:8px 0 0;line-height:1.6;">Helping people find the right property with data-driven insights, verified listings, and trustworthy owners. Reach out for partnerships and support.</p>
+    </div>
+    <div>
+      <h4 style="color:white;margin-top:0;">Quick Links</h4>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;">
+        <li><a href="{% url 'home' %}" style="color:#cbd5e1;">Home</a></li>
+        <li><a href="{% url 'search' %}" style="color:#cbd5e1;">Search</a></li>
+        <li><a href="{% url 'all_ads' %}" style="color:#cbd5e1;">All Ads</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:white;margin-top:0;">Contact</h4>
+      <p style="margin:8px 0 0;">Email: support@searchingyourhome.example<br>Phone: +91 98765 43210</p>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:24px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;">
+    <small>© {{ now|date:'Y' }} SearchingYourHome. All rights reserved.</small>
+    <div style="display:flex;gap:12px;">
+      <a href="#" style="color:#cbd5e1;"><i class="fab fa-facebook fa-lg"></i></a>
+      <a href="#" style="color:#cbd5e1;"><i class="fab fa-twitter fa-lg"></i></a>
+      <a href="#" style="color:#cbd5e1;"><i class="fab fa-linkedin fa-lg"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Small inline styles for analytics responsiveness -->
+<style>
+@media (max-width: 768px) {
+  .analytics-grid { grid-template-columns: 1fr !important; }
+  .site-footer { padding: 28px 12px; }
+  .site-footer div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,379 @@
+{% extends 'navigation.html' %}
+{% block body %}
+<style>
+/* 🌈 Global Reset & Font */
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #d0e8ff, #a5d8ff);
+  margin: 0;
+  padding: 0;
+}
+
+/* 🏠 Page Title */
+.container2 {
+  width: 60%;
+  background: linear-gradient(90deg, #20305E, #3a5ba0);
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 40px auto 20px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.container2:hover {
+  transform: scale(1.02);
+}
+
+/* 📦 Form Container */
+.container {
+  width: 60%;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px 50px;
+  margin: 0 auto 60px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+}
+
+.container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* 🏷️ Labels */
+label {
+  font-weight: 600;
+  color: #20305E;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+/* ✏️ Inputs */
+input[type=text],
+input[type=number],
+input[type=file],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #20305E;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(32, 48, 94, 0.4);
+  outline: none;
+}
+
+/* 🧭 Buttons */
+#id1, #id2 {
+  background: linear-gradient(90deg, #20305E, #3a5ba0);
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(32, 48, 94, 0.3);
+}
+
+#id1 {
+  display: block;
+  margin: 30px auto 0;
+}
+
+#id2 {
+  float: right;
+  margin-top: -5px;
+}
+
+#id1:hover,
+#id2:hover {
+  background: linear-gradient(90deg, #3a5ba0, #20305E);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(32, 48, 94, 0.4);
+}
+
+/* 📏 Form Rows */
+.row {
+  margin-bottom: 18px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 5px;
+}
+
+/* 🔄 Clearfix */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* 📱 Responsive */
+@media screen and (max-width: 768px) {
+  .container, .container2 {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .col-25, .col-75 {
+    width: 100%;
+  }
+
+  #id2 {
+    float: none;
+    display: block;
+    margin: 10px auto;
+  }
+
+  #id1 {
+    width: 80%;
+  }
+}
+</style>
+
+{% if error %}
+<script>
+  alert('Updated Room Detail Successfully');
+  window.location='{% url 'img' %}';
+</script>
+{% endif %}
+
+<center>
+  <div class="container2">
+    <h3>🛠️ Edit Home Detail</h3>
+  </div>
+</center>
+
+<div class="container">
+  <form action="{% url 'edit_detail1' data.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-25">
+        <label for="country">State</label>
+      </div>
+      <div class="col-75">
+        <select id="country" name="state">
+          {% for i in state %}
+            {% if i.name != st.name %}
+              <option value="{{i.name}}">{{i.name}}</option>
+            {% else %}
+              {% if i.name == data.state.name %}
+                <option value="{{data.state.name}}" selected>{{data.state.name}}</option>
+              {% else %}
+                <option value="{{st.name}}" selected>{{st.name}}</option>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <input id="id2" type="submit" value="Search 🔍">
+    </div>
+  </form>
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-25">
+        <label for="country">District</label>
+      </div>
+      <div class="col-75">
+        <select id="country" name="dist">
+          {% for i in dist %}
+            {% if i.name != data.dist.name %}
+              <option value="{{i.name}}">{{i.name}}</option>
+            {% else %}
+              <option value="{{data.dist.name}}" selected>{{data.dist.name}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Area / Neighborhood</label></div>
+      <div class="col-75"><input type="text" name="area" value="{{data.area}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="fname">Local Address</label></div>
+      <div class="col-75"><input type="text" name="local" value="{{data.local_add}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Latitude</label></div>
+      <div class="col-75"><input id="latitudeInput" type="text" name="latitude" value="{{data.latitude}}"></div>
+    </div>
+    <div class="row">
+      <div class="col-25"></div>
+      <div class="col-75" style="margin-top:-16px; margin-bottom:8px; font-size:12px; color:#555; line-height:1.4;">
+        Click the map to move the marker, or drag the marker to update coordinates.
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25"><label for="longitude">Longitude</label></div>
+      <div class="col-75"><input id="longitudeInput" type="text" name="longitude" value="{{data.longitude}}"></div>
+    </div>
+    <div class="row" style="margin-top: 10px; gap: 10px; display: flex; flex-wrap: wrap;">
+      <button id="locateBtn" type="button" class="btn-location" style="flex:1; min-width:150px;">Use My Current Location</button>
+      <button id="clearBtn" type="button" class="btn-location" style="flex:1; min-width:150px; background:#777;">Clear Location</button>
+    </div>
+
+    <div class="row" style="margin-top: 18px;">
+      <div class="col-25"></div>
+      <div class="col-75">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <div id="edit-map" style="height: 320px; width: 100%; border-radius: 12px; border: 1px solid #ccc;"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Title</label></div>
+      <div class="col-75"><input type="text" name="title" value="{{data.title}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Description</label></div>
+      <div class="col-75"><input type="text" name="desc" value="{{data.desc}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Rent</label></div>
+      <div class="col-75"><input type="number" name="rent" value="{{data.rent}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Image</label></div>
+      <div class="col-75"><input type="file" name="img">{{data.img}}</div>
+    </div>
+
+    <div class="row">
+      <input id="id1" type="submit" value="💾 Update Details">
+    </div>
+  </form>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const editMap = L.map('edit-map').setView([
+    {{ data.latitude|default:20.5937 }},
+    {{ data.longitude|default:78.9629 }}
+  ], {% if data.latitude and data.longitude %}14{% else %}5{% endif %});
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 19,
+  }).addTo(editMap);
+
+  let editMarker = null;
+
+  function editUpdateCoordinates(lat, lng) {
+    document.getElementById('latitudeInput').value = lat || '';
+    document.getElementById('longitudeInput').value = lng || '';
+  }
+
+  function editCreateOrMoveMarker(lat, lng, zoom = true) {
+    if (lat === null || lng === null || lat === '' || lng === '') return;
+    const position = [parseFloat(lat), parseFloat(lng)];
+    if (!editMarker) {
+      editMarker = L.marker(position, { draggable: true }).addTo(editMap);
+      editMarker.on('dragend', function(event) {
+        const pos = event.target.getLatLng();
+        editUpdateCoordinates(pos.lat.toFixed(6), pos.lng.toFixed(6));
+        editMap.setView(pos, editMap.getZoom());
+      });
+    } else {
+      editMarker.setLatLng(position);
+    }
+    if (zoom) {
+      editMap.setView(position, 14);
+    }
+    editUpdateCoordinates(position[0].toFixed(6), position[1].toFixed(6));
+  }
+
+  editMap.on('click', function(e) {
+    const { lat, lng } = e.latlng;
+    editCreateOrMoveMarker(lat, lng, false);
+  });
+
+  document.getElementById('locateBtn').addEventListener('click', function() {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      editCreateOrMoveMarker(lat, lng);
+    }, function(error) {
+      console.error('Geolocation error:', error);
+      alert('Unable to get your location. Please allow location access and try again.');
+    }, {
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout: 20000,
+    });
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function() {
+    if (editMarker) {
+      editMap.removeLayer(editMarker);
+      editMarker = null;
+    }
+    editUpdateCoordinates('', '');
+    editMap.setView([20.5937, 78.9629], 5);
+  });
+
+  document.getElementById('latitudeInput').addEventListener('change', function() {
+    const lat = this.value.trim();
+    const lng = document.getElementById('longitudeInput').value.trim();
+    if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+      editCreateOrMoveMarker(lat, lng);
+    }
+  });
+
+  document.getElementById('longitudeInput').addEventListener('change', function() {
+    const lat = document.getElementById('latitudeInput').value.trim();
+    const lng = this.value.trim();
+    if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+      editCreateOrMoveMarker(lat, lng);
+    }
+  });
+
+  window.addEventListener('load', function() {
+    const lat = document.getElementById('latitudeInput').value.trim();
+    const lng = document.getElementById('longitudeInput').value.trim();
+    if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+      editCreateOrMoveMarker(lat, lng);
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,367 @@
+{% extends 'navigation.html' %}
+{% block body %}
+
+<style>
+  .listing-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 24px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  }
+  .page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #20305E;
+    margin-bottom: 14px;
+  }
+  .listing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 22px;
+  }
+  .listing-card {
+    border: 1px solid #d1d5db;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .listing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+  }
+  .listing-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+  .listing-card-body {
+    padding: 18px;
+  }
+  .listing-card h4 {
+    margin: 0 0 8px;
+    color: #111827;
+    font-size: 18px;
+  }
+  .listing-card p,
+  .listing-card span {
+    margin: 6px 0;
+    color: #4b5563;
+  }
+  .listing-card a {
+    text-decoration: none;
+    color: #2f80ed;
+  }
+  .pagination-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .pagination-bar a {
+    padding: 10px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    color: #1f2937;
+    text-decoration: none;
+  }
+  .recommended-section {
+    margin-top: 40px;
+  }
+  .recommended-section h3 {
+    font-size: 22px;
+    color: #20305E;
+    margin-bottom: 16px;
+  }
+  .recommended-grid {
+    display: grid;
+    gap: 18px;
+  }
+  .view-tab {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .tab-button {
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #1f2937;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  .tab-button:hover {
+    background: #eef2ff;
+    border-color: #93c5fd;
+  }
+  .tab-button.active {
+    background: linear-gradient(90deg, #20305E, #2f80ed);
+    color: white;
+    border-color: #2f80ed;
+  }
+  .prediction-card {
+    border: 1px solid #d1d5db;
+    border-radius: 18px;
+    padding: 22px;
+    background: #f8fafc;
+    margin-top: 18px;
+  }
+  .prediction-card label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  .prediction-card input,
+  .prediction-card select,
+  .prediction-card textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
+  .prediction-card button {
+    background: linear-gradient(90deg, #20305E, #2f80ed);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .profile-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .profile-block {
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 14px;
+    background: #f8fafc;
+  }
+  .profile-block img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+  }
+  .profile-block div {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .profile-block p {
+    margin: 0 0 10px;
+    font-weight: 600;
+    color: #111827;
+  }
+  .profile-block span {
+    display: block;
+    color: #475569;
+  }
+  .prediction-result {
+    margin-top: 18px;
+    padding: 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
+    background: white;
+    color: #0f172a;
+    font-weight: 600;
+  }
+  @media (max-width: 768px) {
+    .listing-container { padding: 18px; }
+    .profile-row { grid-template-columns: 1fr; }
+  }
+  .ad-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 16px;
+  }
+  @media (max-width: 768px) {
+    .listing-container { padding: 18px; }
+  }
+</style>
+
+<div class="listing-container">
+  <div class="page-title">All Available Listings</div>
+  <div style="margin-bottom: 20px; color: #4b5563; text-align:center;">
+    Browse the latest accepted homes, with pagination and a recommendation/prediction dropdown below.
+  </div>
+
+  <div class="view-tab">
+    <a class="tab-button {% if active_tab == 'recommended' %}active{% endif %}" href="?tab=recommended">Recommended Homes</a>
+    <a class="tab-button {% if active_tab == 'prediction' %}active{% endif %}" href="?tab=prediction">House Price Prediction</a>
+  </div>
+
+  {% if page_obj.object_list %}
+  <div class="listing-grid">
+    {% for item in page_obj.object_list %}
+    <div class="listing-card">
+      <a href="{% url 'detail' item.id %}">
+        {% if item.featured_image and item.featured_image.url %}
+          <img src="{{ item.featured_image.url }}" alt="{{ item.title }}">
+        {% else %}
+          <div class="ad-no-image">No Image Available</div>
+        {% endif %}
+      </a>
+      <div class="listing-card-body">
+        <h4>{{ item.title }}</h4>
+        <p>{{ item.description }}</p>
+        <span><strong>Rent:</strong> ₹{{ item.rent }} / month</span><br>
+        <span><strong>Area:</strong> {{ item.area.name }}</span><br>
+        <span><strong>Address:</strong> {{ item.address }}</span><br>
+        {% if item.latitude and item.longitude %}
+          <a href="https://www.google.com/maps/search/?api=1&query={{ item.latitude }},{{ item.longitude }}" target="_blank">View on map</a>
+        {% endif %}
+        <div class="profile-row">
+          <div class="profile-block">
+            <p>Owner Profile</p>
+            <div>
+              {% if item.landlord.profile.profile_picture and item.landlord.profile.profile_picture.url %}
+                <img src="{{ item.landlord.profile.profile_picture.url }}" alt="Owner">
+              {% else %}
+                <div class="ad-no-image" style="height:44px;width:44px;font-size:12px;padding:0;">No Image</div>
+              {% endif %}
+              <span>{{ item.landlord.get_full_name|default:item.landlord.username }}</span>
+            </div>
+          </div>
+          <div class="profile-block">
+            <p>Contact Details</p>
+            <span><strong>Mobile:</strong> {{ item.landlord.profile.phone }}</span>
+            <span><strong>Email:</strong> {{ item.landlord.email }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if page_obj.has_other_pages %}
+  <div class="pagination-bar">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span style="color:#4b5563;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% else %}
+  <p style="text-align:center; color:#4b5563;">No listings are available at this time.</p>
+  {% endif %}
+
+  {% if active_tab == 'recommended' and recommended %}
+  <div class="recommended-section">
+    <h3>Recommended Homes</h3>
+    <div class="recommended-grid">
+      {% for item in recommended %}
+      <div class="listing-card">
+        <a href="{% url 'detail' item.id %}">
+          {% if item.featured_image and item.featured_image.url %}
+            <img src="{{ item.featured_image.url }}" alt="{{ item.title }}">
+          {% else %}
+            <div class="ad-no-image">No Image Available</div>
+          {% endif %}
+        </a>
+        <div class="listing-card-body">
+          <h4>{{ item.title }}</h4>
+          <p>{{ item.description }}</p>
+          <span><strong>Rent:</strong> ₹{{ item.rent }} / month</span><br>
+          <span><strong>Area:</strong> {{ item.area.name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% elif active_tab == 'recommended' %}
+  <div class="recommended-section">
+    <h3>Recommended Homes</h3>
+    <p style="color:#475569;">No recommended homes available right now.</p>
+  </div>
+  {% endif %}
+
+  {% if active_tab == 'prediction' %}
+  <div class="prediction-card">
+    <h3 style="margin-top:0; color:#20305E;">House Price Prediction</h3>
+    <form method="get">
+      <input type="hidden" name="tab" value="prediction">
+      <label for="predict_state">State</label>
+      <select id="predict_state" name="predict_state" onchange="filterPredictionDistricts()">
+        <option value="">-- Select State --</option>
+        {% for state in states %}
+          <option value="{{ state.name }}" {% if predict_state == state.name %}selected{% endif %}>{{ state.name }}</option>
+        {% endfor %}
+      </select>
+      <label for="predict_dist">District</label>
+      <select id="predict_dist" name="predict_dist">
+        <option value="">-- Select District --</option>
+        {% for district in districts %}
+          <option value="{{ district.name }}" data-state-name="{{ district.state.name }}" {% if predict_dist == district.name %}selected{% endif %}>{{ district.name }}</option>
+        {% endfor %}
+      </select>
+      <label for="predict_title">Title / Keywords</label>
+      <input type="text" id="predict_title" name="predict_title" value="{{ predict_title|default:'' }}" placeholder="Example: 2BHK near metro">
+      <label for="predict_desc">Description</label>
+      <textarea id="predict_desc" name="predict_desc" rows="4" placeholder="Enter property description">{{ predict_desc|default:'' }}</textarea>
+      <button type="submit">Estimate Rent</button>
+    </form>
+    {% if price_prediction is not None %}
+      <div class="prediction-result">Estimated Rent: <strong>₹{{ price_prediction }}</strong> per month</div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  function filterPredictionDistricts() {
+    const stateValue = document.getElementById('predict_state').value;
+    const districtSelect = document.getElementById('predict_dist');
+    const options = districtSelect.querySelectorAll('option');
+
+    options.forEach(opt => {
+      if (!stateValue || opt.value === '' || opt.dataset.stateName === stateValue) {
+        opt.style.display = 'block';
+      } else {
+        opt.style.display = 'none';
+      }
+    });
+
+    const selectedDistrict = '{{ predict_dist|escapejs }}';
+    const currentOption = Array.from(options).find(opt => opt.value === selectedDistrict && opt.style.display !== 'none');
+    if (currentOption) {
+      districtSelect.value = selectedDistrict;
+    } else {
+      districtSelect.value = '';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('predict_state')) {
+      filterPredictionDistricts();
+    }
+  });
+</script>
+
+{% endblock %}

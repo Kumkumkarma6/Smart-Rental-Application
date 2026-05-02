@@ -1,0 +1,234 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+
+<style>
+/* ===== Base Reset ===== */
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f3f4f6, #dbeafe);
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Page Heading ===== */
+p[align="center"] {
+  font-size: 38px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #20305E, #4834d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 2px;
+  margin-top: 40px;
+  padding: 20px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* ===== Card Layout ===== */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin: 50px auto;
+  padding: 0 40px;
+}
+
+.col-sm-3 {
+  flex: 0 0 380px;
+}
+
+.jumbotron {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  padding: 30px 25px;
+  text-align: center;
+  transition: all 0.35s ease-in-out;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.jumbotron:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* ===== Image Styling ===== */
+.jumbotron img {
+  border-radius: 15px;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  transition: transform 0.5s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.jumbotron img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* ===== Card Text ===== */
+.jumbotron p {
+  color: #EE1D29;
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+.jumbotron h4 {
+  color: #2d3748;
+  font-size: 18px;
+  margin: 12px 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.jumbotron a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.jumbotron a:hover {
+  color: #EE1D29;
+}
+
+/* ===== Buttons ===== */
+#id2 {
+  background: linear-gradient(90deg, #20305E, #314e9a);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 12px 8px;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  min-width: 120px;
+}
+#id2:hover {
+  background: linear-gradient(90deg, #EE1D29, #ff5a5a);
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(238,29,41,0.4);
+}
+
+/* ===== Owner Image ===== */
+.jumbotron a img {
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+  border: 2px solid #4834d4;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.jumbotron a img:hover {
+  transform: scale(1.12);
+  border-color: #EE1D29;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .row {
+    padding: 0 10px;
+  }
+  .col-sm-3 {
+    flex: 0 0 90%;
+  }
+  #id2 {
+    width: 45%;
+    font-size: 13px;
+  }
+}
+
+  .ad-no-image,
+  .owner-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 180px;
+    border-radius: 12px;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .owner-no-image {
+    width: 35px;
+    height: 35px;
+    font-size: 10px;
+    border-radius: 50%;
+    border: 2px solid #20305E;
+    padding: 3px;
+  }
+</style>
+
+{% if error %}
+<script>alert('Assigned Ads Successfully');</script>
+{% endif %}
+
+<p align="center">🆕 New Advertisement Request</p>
+
+<div class="row">
+  {% for i in data %}
+  {% if i.status.status == "pending" %}
+  <div class="col-sm-3">
+    <div class="jumbotron">
+      <p>{{ i.title }}</p>
+      <a href="{% url 'detail' i.id %}">
+        {% if i.img and i.img.url %}
+          <img src="{{ i.img.url }}" alt="Ad Image">
+        {% else %}
+          <div class="ad-no-image">No Image</div>
+        {% endif %}
+      </a>
+      <h4>{{ i.desc }}</h4>
+      <h4>💰 Rent: ₹{{ i.rent }} / month</h4>
+      <h4>📞 Contact: {{ i.register.mobile }}</h4>
+      <h4>📍 Local Address: {{ i.local_add }}</h4>
+      <a href="{% url 'owner' i.id %}">
+        {% if i.register.user.userprofile.profile_picture and i.register.user.userprofile.profile_picture.url %}
+          <img src="{{ i.register.user.userprofile.profile_picture.url }}" alt="Owner Image">
+        {% else %}
+          <div class="owner-no-image">No Owner Image</div>
+        {% endif %}
+        Owner Detail
+      </a>
+      <br>
+      <button id="id2">
+        <a href="{% url 'change' 1 i.id %}" style="color:white;text-decoration:none;">Accept</a>
+      </button>
+      <button id="id2">
+        <a href="{% url 'change' 2 i.id %}" style="color:white;text-decoration:none;">Reject</a>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}

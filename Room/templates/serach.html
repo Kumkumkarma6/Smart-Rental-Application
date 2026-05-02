@@ -1,0 +1,493 @@
+ {% extends 'navigation.html' %}
+{% block body %}
+
+{% load static %}
+
+
+
+<style>
+/* ===== Global Style ===== */
+body {
+  background: linear-gradient(135deg, #eef2f7, #dbe9ff);
+  font-family: 'Poppins', sans-serif;
+  color: #20305E;
+}
+
+/* ===== Header Title ===== */
+.container2 {
+  width: 55%;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #20305E, #2f80ed);
+  color: white;
+  padding: 18px;
+  margin: 40px auto;
+  text-align: center;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  animation: fadeInDown 1s ease;
+}
+
+.container2 h4 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* ===== Search Form Box ===== */
+.container {
+  width: 60%;
+  margin: 0 auto 50px;
+  border-radius: 12px;
+  background: white;
+  padding: 35px 45px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  animation: fadeInUp 1.2s ease;
+}
+
+label {
+  font-weight: 600;
+  color: #20305E;
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid #cfd8dc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+select:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 8px rgba(47,128,237,0.4);
+  outline: none;
+}
+
+/* ===== Button Style ===== */
+#searchBtn {
+  background: linear-gradient(90deg, #20305E, #2f80ed);
+  color: white;
+  width: 45%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#searchBtn:hover {
+  background: #2f80ed;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(47,128,237,0.3);
+}
+
+/* ===== Animated Search Button Effect ===== */
+.loading-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: -100%;
+  top: 0;
+  background: rgba(255,255,255,0.4);
+  animation: slide 1.2s infinite;
+}
+
+@keyframes slide {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* ===== Section Title ===== */
+.page-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 20px;
+  color: #1e2d5a;
+}
+
+/* ===== Room Cards ===== */
+.jumbotron {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  transition: all 0.4s ease;
+  padding: 20px;
+  margin-bottom: 25px;
+  animation: fadeInUp 0.8s ease;
+}
+
+.jumbotron:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.jumbotron img {
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.jumbotron p {
+  font-weight: 600;
+  color: #e60023;
+  font-size: 18px;
+}
+
+.jumbotron h4 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  margin: 6px 0;
+}
+
+.jumbotron a {
+  color: #20305E;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.jumbotron a:hover {
+  color: #2f80ed;
+  text-decoration: underline;
+}
+
+.jumbotron img[style*='border-radius:50%'] {
+  margin-right: 8px;
+  border: 2px solid #2f80ed;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .container, .container2 { width: 90%; }
+  #searchBtn { width: 100%; }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeInDown {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+  .ad-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 150px;
+    border-radius: 12px;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .owner-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 10px;
+    text-align: center;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+</style>
+
+<!-- ===== HTML CONTENT ===== -->
+<center>
+  <div class="container2">
+    <h4>Search In Your Area</h4>
+  </div>
+</center>
+
+<div class="container">
+  <form id="searchForm" action="" method="get">
+    <div class="row">
+      <div class="col-25">
+        <label for="query">Search</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="query" name="query" placeholder="e.g. Pune 7000-10000, Mumbai, 4k-6k" value="{{ query|default:'' }}" style="width:100%; padding:12px; border:1.5px solid #cfd8dc; border-radius:8px;">
+      </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+      <div class="col-25">
+        <label for="state">State</label>
+      </div>
+      <div class="col-75">
+        <select id="state" name="state" onchange="updateDistricts()">
+          <option value="">-- Select State --</option>
+          {% for i in state %}
+          <option value="{{ i.id }}" data-state-name="{{ i.name }}" {% if selected_state == i.name %}selected{% endif %}>{{ i.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-25">
+        <label for="dist">District</label>
+      </div>
+      <div class="col-75">
+        <select id="dist" name="dist">
+          <option value="">-- Select District --</option>
+          {% for i in dist %}
+          <option value="{{ i.id }}" data-state-name="{{ i.state.name }}" data-dist-name="{{ i.name }}" {% if selected_dist == i.name %}selected{% endif %}>{{ i.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-25">
+        <label for="area">Area</label>
+      </div>
+      <div class="col-75">
+        <div style="position: relative;">
+          <input type="text" id="area" name="area" placeholder="Type area name (optional)" value="{{ selected_area|default:'' }}" style="width:100%; padding:12px; border:1.5px solid #cfd8dc; border-radius:8px;" autocomplete="off" oninput="updateAreaSuggestions()">
+          <div id="areaSuggestions" style="position:absolute; top:100%; left:0; right:0; background:#fff; border:1px solid #cfd8dc; border-top:none; border-radius:0 0 8px 8px; max-height:200px; overflow-y:auto; display:none; z-index:100;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-25">
+        <label for="min_rent">Min Rent</label>
+      </div>
+      <div class="col-75">
+        <input type="number" name="min_rent" value="{{ min_rent|default:'' }}" placeholder="Min Rent" style="width:100%; padding:12px; border:1.5px solid #cfd8dc; border-radius:8px;">
+      </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-25">
+        <label for="max_rent">Max Rent</label>
+      </div>
+      <div class="col-75">
+        <input type="number" name="max_rent" value="{{ max_rent|default:'' }}" placeholder="Max Rent" style="width:100%; padding:12px; border:1.5px solid #cfd8dc; border-radius:8px;">
+      </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-25">
+        <label for="sort">Sort By</label>
+      </div>
+      <div class="col-75">
+        <select id="sort" name="sort" style="width:100%; padding:12px; border:1.5px solid #cfd8dc; border-radius:8px;">
+          <option value="">Default</option>
+          <option value="rent_asc" {% if sort_order == 'rent_asc' %}selected{% endif %}>Rent Low to High</option>
+          <option value="rent_desc" {% if sort_order == 'rent_desc' %}selected{% endif %}>Rent High to Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" align="center" style="margin-top:20px;">
+      <input type="submit" value="Search" id="searchBtn">
+    </div>
+    <script>
+      let allAreas = [];
+
+      function updateDistricts() {
+        const stateSelect = document.getElementById('state');
+        const selectedStateId = stateSelect.value;
+        const distSelect = document.getElementById('dist');
+
+        if (!selectedStateId) {
+          distSelect.innerHTML = '<option value="">-- Select District --</option>';
+          return;
+        }
+
+        fetch(`/ajax/get_districts/?state_id=${selectedStateId}`)
+          .then(response => response.json())
+          .then(data => {
+            distSelect.innerHTML = '<option value="">-- Select District --</option>';
+            data.forEach(district => {
+              const option = document.createElement('option');
+              option.value = district.id;
+              option.textContent = district.name;
+              distSelect.appendChild(option);
+            });
+          })
+          .catch(error => console.error('Error fetching districts:', error));
+      }
+
+      function updateAreaSuggestions() {
+        const distSelect = document.getElementById('dist');
+        const areaInput = document.getElementById('area');
+        const suggestionsDiv = document.getElementById('areaSuggestions');
+        const inputVal = areaInput.value.toLowerCase();
+
+        if (!distSelect.value || !inputVal) {
+          suggestionsDiv.style.display = 'none';
+          return;
+        }
+
+        fetch(`/ajax/get_areas/?district_id=${distSelect.value}`)
+          .then(response => response.json())
+          .then(data => {
+            const filtered = data
+              .filter(item => item.name.toLowerCase().includes(inputVal))
+              .slice(0, 8);
+
+            if (filtered.length === 0) {
+              suggestionsDiv.style.display = 'none';
+              return;
+            }
+
+            suggestionsDiv.innerHTML = '';
+            filtered.forEach(item => {
+              const div = document.createElement('div');
+              div.style.cssText = 'padding:10px; border-bottom:1px solid #eee; cursor:pointer; hover:background:#f5f5f5;';
+              div.textContent = item.name;
+              div.onmouseover = () => div.style.backgroundColor = '#f5f5f5';
+              div.onmouseout = () => div.style.backgroundColor = 'transparent';
+              div.onclick = () => {
+                areaInput.value = item.name;
+                suggestionsDiv.style.display = 'none';
+              };
+              suggestionsDiv.appendChild(div);
+            });
+            suggestionsDiv.style.display = 'block';
+          })
+          .catch(error => console.error('Error fetching areas:', error));
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Set initial values if they exist
+        const stateSelect = document.getElementById('state');
+        const distSelect = document.getElementById('dist');
+
+        if ('{{ selected_state }}') {
+          stateSelect.value = '{{ selected_state }}';
+          updateDistricts();
+        }
+        if ('{{ selected_dist_id }}') {
+          setTimeout(() => {
+            distSelect.value = '{{ selected_dist_id }}';
+          }, 100);
+        }
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+          const areaSuggestions = document.getElementById('areaSuggestions');
+          const areaInput = document.getElementById('area');
+          if (event.target !== areaInput && event.target !== areaSuggestions) {
+            areaSuggestions.style.display = 'none';
+          }
+        });
+      });
+    </script>
+  </form>
+</div>
+
+<p class="page-title">Search Results</p>
+<hr style="width:60%;margin:auto;margin-bottom:30px;">
+
+<div style="max-width: 900px; margin: 25px auto;">
+    <h3 style="color:#20305E; margin-bottom:15px;">{{ page_obj.paginator.count }} Home{{ page_obj.paginator.count|pluralize }} Found</h3>
+    {% if page_obj.object_list %}
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:18px;">
+        {% for item in page_obj.object_list %}
+        <div style="padding:18px; border:1px solid #d1d5db; border-radius:16px; background:white;">
+            <p style="margin:0 0 10px; font-weight:600; color:#111;">{{ item.title }}</p>
+            <a href="{% url 'detail' item.id %}">
+              {% if item.featured_image and item.featured_image.url %}
+                <img src="{{ item.featured_image.url }}" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
+              {% else %}
+                <div class="ad-no-image">No Image</div>
+              {% endif %}
+            </a>
+            <hr>
+            <h4>{{ item.description }}</h4>
+            <h4>Area: {% if item.area %}{{ item.area.name }}{% else %}N/A{% endif %}</h4>
+            <h4>Rent: ₹{{ item.rent }} / month</h4>
+            <h4>Contact: {{ item.landlord.profile.phone|default:'Not provided' }}</h4>
+            <h4>Address: {{ item.address }}
+              {% if item.latitude and item.longitude %}
+                <a href="https://www.google.com/maps/search/?api=1&query={{ item.latitude }},{{ item.longitude }}" target="_blank" style="margin-left:8px; color:#2f80ed; font-size:12px; text-decoration:none;">Map</a>
+              {% endif %}
+            </h4>
+            <a href="{% url 'owner' item.id %}" style="display:inline-flex; align-items:center; gap:8px; color:#20305E; font-weight:600; text-decoration:none; margin-top:8px;">
+              {% if item.landlord.profile.profile_picture and item.landlord.profile.profile_picture.url %}
+                <img src="{{ item.landlord.profile.profile_picture.url }}" style="border-radius:50%;width:30px;height:30px; object-fit:cover;">
+              {% else %}
+                <div class="owner-no-image">No Owner Image</div>
+              {% endif %}
+              View Owner Profile
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color:#4b5563;">No matching rooms found for this search.</p>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+    <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-top:24px; flex-wrap:wrap;">
+      {% if page_obj.has_previous %}
+        <a href="?{{ query_string }}&page={{ page_obj.previous_page_number }}" style="padding:10px 16px; border:1px solid #cbd5e1; border-radius:8px; color:#1f2937; text-decoration:none;">Previous</a>
+      {% endif %}
+      <span style="color:#4b5563;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?{{ query_string }}&page={{ page_obj.next_page_number }}" style="padding:10px 16px; border:1px solid #cbd5e1; border-radius:8px; color:#1f2937; text-decoration:none;">Next</a>
+      {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+{% if recommended %}
+<div style="max-width: 900px; margin: 15px auto 40px;">
+  <h3 style="color:#20305E; margin-bottom:15px;">Recommended Homes</h3>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:18px;">
+    {% for item in recommended %}
+    <div style="padding:18px; border:1px solid #d1d5db; border-radius:16px; background:white;">
+      <p style="margin:0 0 10px; font-weight:600; color:#111;">{{ item.title }}</p>
+      <a href="{% url 'detail' item.id %}">
+        {% if item.img and item.img.url %}
+          <img src="{{ item.img.url }}" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
+        {% else %}
+          <div class="ad-no-image">No Image</div>
+        {% endif %}
+      </a>
+      <hr>
+      <h4>{{ item.description }}</h4>
+      <h4>Area: {% if item.area %}{{ item.area.name }}{% else %}N/A{% endif %}</h4>
+      <h4>Rent: ₹{{ item.rent }} / month</h4>
+      <h4>Contact: {{ item.landlord.profile.phone|default:'Not provided' }}</h4>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<script>
+document.getElementById("searchForm").addEventListener("submit", function() {
+  const btn = document.getElementById("searchBtn");
+  btn.classList.add("loading-btn");
+  btn.value = "Searching...";
+});
+</script>
+
+{% endblock %}
+
+
+

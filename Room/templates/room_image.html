@@ -1,0 +1,341 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<style>
+.property-dashboard {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f6f9fc, #edf2f7);
+    min-height: 100vh;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.dashboard-title {
+    font-size: 3.5rem;
+    color: #1a202c;
+    font-weight: 800;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.dashboard-title i {
+    color: #4834d4;
+    font-size: 3.2rem;
+}
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.property-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.property-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.property-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.property-card:hover .property-image img {
+    transform: scale(1.1);
+}
+
+.property-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255,255,255,0.95);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.property-content {
+    padding: 25px;
+}
+
+.property-title {
+    font-size: 1.8rem;
+    color: #1a202c;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.property-details {
+    display: grid;
+    gap: 15px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #2d3748;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.detail-item i {
+    width: 24px;
+    color: #6366f1;
+    font-size: 1.2rem;
+}
+
+.property-owner {
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.owner-image {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.owner-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.owner-link {
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.15rem;
+    transition: color 0.3s ease;
+}
+
+.owner-link:hover {
+    color: #6366f1;
+}
+
+.property-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-button {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.add-image-btn {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.edit-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.delete-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(110%);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .property-grid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+    }
+
+    .property-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .property-card {
+        margin: 0 10px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.property-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+  .owner-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 10px;
+    text-align: center;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+</style>
+
+<div class="property-dashboard">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">
+            <i class="fas fa-home"></i>
+            Your Property Listings
+        </h1>
+    </div>
+
+    <div class="property-grid">
+        {% for i in room %}
+        <div class="property-card">
+            <div class="property-image">
+                {% if i.featured_image %}
+                    <img src="{{ i.featured_image.url }}" alt="{{ i.title }}">
+                {% else %}
+                    <div style="width: 100%; height: 250px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; color: #a0aec0;">
+                        No Image Available
+                    </div>
+                {% endif %}
+                <div class="property-status">{{ i.get_status_display }}</div>
+            </div>
+            
+            <div class="property-content">
+                <h2 class="property-title">{{ i.title }}</h2>
+                
+                <div class="property-details">
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ i.address }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>₹{{ i.rent }} / month</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-flag"></i>
+                        <span>{{ i.state.name }}</span>
+                    </div>
+                    {% if i.district %}
+                    <div class="detail-item">
+                        <i class="fas fa-map"></i>
+                        <span>{{ i.district.name }}</span>
+                    </div>
+                    {% endif %}
+                    {% if i.area %}
+                    <div class="detail-item">
+                        <i class="fas fa-location-arrow"></i>
+                        <span>{{ i.area.name }}</span>
+                    </div>
+                    {% endif %}
+                    {% if i.landlord.profile.phone %}
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ i.landlord.profile.phone }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="detail-item">
+                        <i class="fas fa-align-left"></i>
+                        <span>{{ i.description }}</span>
+                    </div>
+                </div>
+
+                <div class="property-owner">
+                    <div class="owner-image">
+                        {% if i.landlord.profile.profile_picture and i.landlord.profile.profile_picture.url %}
+                            <img src="{{ i.landlord.profile.profile_picture.url }}" alt="Owner">
+                        {% else %}
+                            <div class="owner-no-image">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="owner-info">
+                        <div style="font-weight: 600; color: #2d3748;">{{ i.landlord.get_full_name|default:i.landlord.username }}</div>
+                        <div style="font-size: 0.9rem; color: #718096;">Landlord</div>
+                    </div>
+                </div>
+
+                <div class="property-actions">
+                    <a href="{% url 'room_img' i.id %}" class="action-button add-image-btn">
+                        <i class="fas fa-camera"></i> Add Image
+                    </a>
+                    <a href="{% url 'edit_detail' i.state.id i.id %}" class="action-button edit-btn">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'delete' i.id %}" class="action-button delete-btn">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

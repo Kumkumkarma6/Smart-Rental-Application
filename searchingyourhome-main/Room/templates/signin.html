@@ -1,0 +1,160 @@
+{% extends 'navigation.html' %}
+{% block body %}
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>HOUSE RENTAL SYSTEM | Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+  <style>
+    /* ===== Page Background ===== */
+    .signin-container {
+      min-height: calc(100vh - 100px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 0;
+    }
+
+    /* ===== Login Box ===== */
+    .login-box {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      border-radius: 16px;
+      padding: 40px 50px;
+      width: 420px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 1s ease;
+      text-align: center;
+    }
+
+    .login-box h3 {
+      color: #20305E;
+      font-weight: 600;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    hr {
+      border-top: 2px solid #2f80ed;
+      width: 80px;
+      margin: 10px auto 25px;
+    }
+
+    /* ===== Input Fields ===== */
+    .login-box input[type="text"],
+    .login-box input[type="password"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #cfd8dc;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .login-box input[type="text"]:focus,
+    .login-box input[type="password"]:focus {
+      border-color: #2f80ed;
+      box-shadow: 0 0 8px rgba(47,128,237,0.4);
+      outline: none;
+    }
+
+    /* ===== Button ===== */
+    .login-box input[type="submit"] {
+      width: 50%;
+      background: linear-gradient(90deg, #20305E, #2f80ed);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-box input[type="submit"]:hover {
+      background: #2f80ed;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(47,128,237,0.3);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 500px) {
+      .login-box {
+        width: 90%;
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+
+<div class="signin-container">
+  <div class="login-box">
+    <h3><strong>Login Your Account</strong></h3>
+    <hr>
+
+    {% if error == "admin" %}
+      <div style="color: green; margin-bottom: 15px; text-align: center;">
+        ✓ Admin login successful! Redirecting...
+      </div>
+      <script>
+        setTimeout(() => {
+          window.location = "{% url 'home' %}";
+        }, 1000);
+      </script>
+    {% elif error == "role_mismatch" %}
+      <div style="color: #c33; margin-bottom: 15px; padding: 10px; background: #fee; border-radius: 5px; text-align: center;">
+        ✗ Role mismatch! Please select the correct role.
+      </div>
+    {% elif error == "yes" %}
+      <div style="color: #c33; margin-bottom: 15px; padding: 10px; background: #fee; border-radius: 5px; text-align: center;">
+        ✗ Invalid credentials. Please try again.
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'signin' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; text-align: left; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">Select Role:</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; border: 2px solid #e3e3e3; border-radius: 8px; background: #f9f9f9;">
+            <input type="radio" name="role" value="tenant" checked style="cursor: pointer; margin-right: 8px;">
+            <span>Tenant</span>
+          </label>
+          <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; border: 2px solid #e3e3e3; border-radius: 8px; background: #f9f9f9;">
+            <input type="radio" name="role" value="landlord" style="cursor: pointer; margin-right: 8px;">
+            <span>Landlord</span>
+          </label>
+        </div>
+      </div>
+
+      <input type="text" name="uname" placeholder="Enter Username" required>
+      <input type="password" name="pwd" placeholder="Enter Password" required>
+      <input type="submit" value="Sign In">
+    </form>
+
+    <p style="margin-top: 15px; color: #7f8c8d; font-size: 14px;">
+      Don't have an account? <a href="{% url 'signup_role' %}" style="color: #2f80ed; text-decoration: none; font-weight: 600;">Sign Up</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

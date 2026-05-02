@@ -1,0 +1,191 @@
+{% extends 'navigation.html' %}
+{% block body %}
+
+<style>
+  .signin-container {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+  }
+
+  .signin-box {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    width: 450px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 1s ease;
+    text-align: center;
+  }
+
+  .signin-box h3 {
+    color: #20305E;
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  hr {
+    border-top: 2px solid #2f80ed;
+    width: 80px;
+    margin: 0 auto 25px;
+  }
+
+  .role-container {
+    margin-bottom: 25px;
+  }
+
+  .role-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .role-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .role-radio {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border: 2px solid #e3e3e3;
+    border-radius: 8px;
+    background: #f9f9f9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .role-radio:hover {
+    border-color: #2f80ed;
+    background: #e3f2fd;
+  }
+
+  .role-radio input {
+    margin-right: 8px;
+    cursor: pointer;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .form-group input:focus {
+    border-color: #2f80ed;
+    box-shadow: 0 0 8px rgba(47, 128, 237, 0.4);
+    outline: none;
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #20305E, #2f80ed);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(47, 128, 237, 0.3);
+  }
+
+  .form-text {
+    margin-top: 20px;
+    color: #7f8c8d;
+    font-size: 14px;
+  }
+
+  .form-text a {
+    color: #2f80ed;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .signin-box {
+      width: 90%;
+      padding: 30px;
+    }
+
+    .role-options {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="signin-container">
+  <div class="signin-box">
+    <h3>Sign In</h3>
+    <hr>
+
+    <form method="POST" action="{% url 'signin' %}">
+      {% csrf_token %}
+
+      <div class="role-container">
+        <label class="role-label">Select Your Role:</label>
+        <div class="role-options">
+          <label class="role-radio">
+            <input type="radio" name="role" value="tenant" checked>
+            <span>Tenant</span>
+          </label>
+          <label class="role-radio">
+            <input type="radio" name="role" value="landlord">
+            <span>Landlord</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="text" name="uname" placeholder="Enter Username" required>
+      </div>
+
+      <div class="form-group">
+        <input type="password" name="pwd" placeholder="Enter Password" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Sign In</button>
+    </form>
+
+    <div class="form-text">
+      Don't have an account? <a href="{% url 'signup_role' %}">Sign Up</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

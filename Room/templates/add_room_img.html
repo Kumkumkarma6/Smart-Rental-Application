@@ -1,0 +1,164 @@
+{% extends 'navigation.html' %}
+{% block body %}
+<style>
+/* === Reset & Font === */
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* === Background === */
+body {
+  background: linear-gradient(135deg, #e3f2fd, #ffffff);
+  margin: 0;
+  padding: 0;
+}
+
+/* === Top Heading Box === */
+.container2 {
+  width: 50%;
+  background-color: #20305E;
+  color: white;
+  padding: 15px 0;
+  margin: 40px auto 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.container2:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.container2 h3 {
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
+/* === Main Container === */
+.container {
+  width: 50%;
+  background-color: #f8faff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  transition: all 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* === Labels and Inputs === */
+label {
+  font-weight: 600;
+  color: #20305E;
+  display: block;
+  margin-bottom: 8px;
+}
+
+input[type=text],
+input[type=file],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+  transition: all 0.3s ease;
+  font-size: 15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #20305E;
+  box-shadow: 0 0 8px rgba(32,48,94,0.3);
+  outline: none;
+}
+
+/* === Submit Button === */
+#id1 {
+  background: #20305E;
+  color: white;
+  font-weight: 600;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  float: right;
+  margin-top: 10px;
+  margin-right: 40%;
+  transition: all 0.3s ease;
+}
+
+#id1:hover {
+  background: #EE1D29;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(238,29,41,0.4);
+}
+
+/* === Layout Fix === */
+.row {
+  margin-bottom: 20px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .container,
+  .container2 {
+    width: 90%;
+  }
+
+  #id1 {
+    float: none;
+    display: block;
+    margin: 20px auto;
+  }
+}
+</style>
+
+{% if error %}
+<script>
+alert("Room Image Added Successfully!");
+window.location = '{% url "detail1" pid %}';
+</script>
+{% endif %}
+
+<center>
+  <div class="container2">
+    <h3>🖼️ Add Room's Image</h3>
+  </div>
+</center>
+
+<div class="container">
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <label for="room-name">Room Name</label>
+      <input type="text" id="room-name" name="name" placeholder="Enter Room Name" required>
+    </div>
+
+    <div class="row">
+      <label for="room-img">Room Image</label>
+      <input type="file" id="room-img" name="img" required>
+    </div>
+
+    <div class="row">
+      <input id="id1" type="submit" value="Submit">
+    </div>
+  </form>
+</div>
+
+{% endblock %}

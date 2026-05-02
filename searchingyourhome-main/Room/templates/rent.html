@@ -1,0 +1,133 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<style>
+/* Simple form styling for rent page */
+.form-card { max-width: 900px; margin: 40px auto; padding: 24px; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.08);} 
+.form-row { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; }
+.form-row label { width: 180px; font-weight:600; color:#20305E; }
+.form-row .input { flex:1; }
+.btn-primary-custom { background: linear-gradient(90deg,#20305E,#2f80ed); color:#fff; padding:10px 18px; border:none; border-radius:8px; }
+.center { text-align:center; }
+@media (max-width:768px){ .form-row{ flex-direction:column; align-items:flex-start } .form-row label{ width:100%; } }
+</style>
+
+{% if error %}
+  <script>
+    alert('Room Added Successfully');
+    window.location = "{% url 'img' %}";
+  </script>
+{% endif %}
+
+<div class="form-card">
+  <h2 class="center">Add Home On Rent</h2>
+
+  {# If view provided 'st' then render full add-form (rent view). Otherwise show state selector (rent1) #}
+  {% if st %}
+    {% if form_error %}
+      <div style="margin-bottom:20px; padding:15px; border-radius:10px; background:#fee; color:#a00; border:1px solid #f5c6cb;">
+        {{ form_error }}
+      </div>
+    {% endif %}
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-row">
+        <label>District</label>
+        <div class="input">
+          <select name="dist" required class="form-control">
+            {% for i in dist %}
+              <option value="{{ i.dist }}">{{ i.dist }}</option>
+            {% endfor %}
+            <option value="__add_new__">+ Add new district</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Area / Neighborhood</label>
+        <div class="input"><input class="form-control" type="text" name="area" placeholder="Enter Area or Locality" required></div>
+      </div>
+
+      <div class="form-row">
+        <label>Local Address</label>
+        <div class="input"><input class="form-control" type="text" name="local" placeholder="Your Local Address" required></div>
+      </div>
+
+      <div class="form-row">
+        <label>Location (Optional - Manual Entry)</label>
+        <div class="input">
+          <!-- Google Maps will be loaded here when you add your API key -->
+          <div id="map" style="height: 300px; width: 100%; border-radius: 8px; margin-bottom: 10px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #666; font-size: 14px;">
+            <div style="text-align: center;">
+              <i class="fa fa-map-marker" style="font-size: 24px; margin-bottom: 10px;"></i><br>
+              Map will load once you add your Google Maps API key<br>
+              <small>Get your free API key from Google Cloud Console</small>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="text" id="latitude" name="latitude" placeholder="Latitude (optional)" style="width: 48%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+            <input type="text" id="longitude" name="longitude" placeholder="Longitude (optional)" style="width: 48%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+          </div>
+          <p style="font-size: 12px; color: #666; margin: 5px 0;">
+            You can manually enter coordinates or get them from Google Maps by right-clicking any location and selecting "What's here?"
+          </p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Title</label>
+        <div class="input"><input class="form-control" type="text" name="title" placeholder="Enter Title" required></div>
+      </div>
+
+      <div class="form-row">
+        <label>Description</label>
+        <div class="input"><textarea class="form-control" name="desc" placeholder="Write your description" required rows="3"></textarea></div>
+      </div>
+
+      <div class="form-row">
+        <label>Rent (per month)</label>
+        <div class="input"><input class="form-control" type="number" name="rent" required></div>
+      </div>
+
+      <div class="form-row">
+        <label>Image</label>
+        <div class="input"><input type="file" name="img" required></div>
+      </div>
+
+      <div class="center" style="margin-top:18px">
+        <button type="submit" class="btn-primary-custom">Submit</button>
+      </div>
+    </form>
+
+  {% else %}
+    <form action="{% url 'rent1' %}" method="post">
+      {% csrf_token %}
+      <div class="form-row">
+        <label>Select State</label>
+        <div class="input">
+          <select name="state" class="form-control">
+            {% for i in state %}
+              <option value="{{ i.state }}">{{ i.state }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <button class="btn-primary-custom" type="submit">Search</button>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+
+    <!-- Google Maps JavaScript removed - will be added back when API key is available -->
+    <script>
+      // Placeholder for manual coordinate entry
+      function updateCoordinates(lat, lng) {
+        document.getElementById('latitude').value = lat || '';
+        document.getElementById('longitude').value = lng || '';
+      }
+    </script>
+</div>
+
+{% endblock %}
+

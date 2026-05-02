@@ -1,0 +1,221 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+<style>
+/* ===== Page Base ===== */
+body {
+  background: linear-gradient(135deg, #20305E, #99DBF9);
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  overflow-x: hidden;
+}
+
+/* ===== Header Line ===== */
+p[align="center"] {
+  font-size: 20px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  width: fit-content;
+  margin: 40px auto 10px;
+  padding: 10px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* ===== Image Container ===== */
+.container {
+  width: 95%;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  transition: all 0.5s ease;
+}
+
+#samples {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+#samples h3 {
+  font-size: 22px;
+  color: #EE1D29;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+#samples img {
+  margin: 10px;
+  border-radius: 15px;
+  width: 230px;
+  height: 230px;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease;
+}
+
+#samples img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.6);
+  border-color: #EE1D29;
+  z-index: 5;
+}
+
+/* ===== Details Card (Jumbotron) ===== */
+.jumbotron {
+  width: 80%;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  padding: 30px;
+  margin: 30px auto;
+  text-align: center;
+  color: #fff;
+  transition: all 0.4s ease;
+}
+
+.jumbotron:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.3);
+}
+
+.jumbotron h4 {
+  font-size: 20px;
+  margin: 12px 0;
+  color: #fefefe;
+  font-weight: 500;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ===== Highlight Texts ===== */
+span[style*="color:red"] {
+  color: #EE1D29 !important;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* ===== Zoom Effect Placeholder (if used) ===== */
+#preview {
+  margin-top: 10px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #samples img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .jumbotron {
+    width: 90%;
+    font-size: 18px;
+  }
+
+  p[align="center"] {
+    font-size: 17px;
+  }
+}
+
+  .detail-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 200px;
+    border-radius: 12px;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+</style>
+
+<p align="center" style="margin-top:1%;font-size:18px">
+  "Your searching Home is 
+  <u><span style="color:red">{{ dist.area.name if dist.area else dist.district.name }}, {{ dist.landlord.username }}</span></u>"
+</p>
+
+<div class="container">
+  <div class="row">
+    {% for i in img %}
+    <div align="center" class="col-lg-3 col-md-4 col-sm-6 col-xs-12" id="samples">
+      <h3>{{ i.title|default:'Image' }}</h3>
+      {% if i.image and i.image.url %}
+        <img src="{{ i.image.url }}" alt="{{ i.title|default:'Property Image' }}">
+      {% else %}
+        <div class="detail-no-image">No Image</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<center>
+  <div class="jumbotron">
+    <h4>{{ dist.description }}</h4>
+    <h4>Area: {{ dist.area.name if dist.area else 'N/A' }}</h4>
+    <h4>Rent : ₹{{ dist.rent }} / month</h4>
+    <h4>Contact : {{ dist.landlord.profile.phone|default:'Not provided' }}</h4>
+    <h4>Address : {{ dist.address }}</h4>
+    {% if dist.latitude and dist.longitude %}
+      <div id="detail-map" style="height: 320px; width: 100%; max-width: 800px; margin: 16px auto; border: 1px solid #ddd; border-radius: 12px;"></div>
+      <h4><a href="https://www.google.com/maps/search/?api=1&query={{ dist.latitude }},{{ dist.longitude }}" target="_blank" style="color:#ffd700; text-decoration:underline;">Open in Google Maps</a></h4>
+    {% else %}
+      <h4><a href="https://www.google.com/maps/search/?api=1&query={{ dist.address|urlencode }}+{{ dist.area.name|urlencode }}+{{ dist.district.name|urlencode }}+{{ dist.state.name|urlencode }}" target="_blank" style="color:#ffd700; text-decoration:underline;">Search on Google Maps</a></h4>
+    {% endif %}
+
+    {% if nearby %}
+      <div style="margin-top:24px; text-align:left; max-width:800px; margin-left:auto; margin-right:auto;">
+        <h4 style="color:#fff;">Nearby Properties</h4>
+        <ul style="list-style:none; padding:0; margin:0;">
+          {% for item in nearby %}
+            <li style="background:rgba(255,255,255,0.14); margin-bottom:10px; padding:12px 14px; border-radius:10px;">
+              <a href="{% url 'detail' item.id %}" style="color:#ffd700; font-weight:600; text-decoration:none;">{{ item.title|default:'Property' }}</a>
+              <div style="color:#f0f0f0; font-size:14px; margin-top:4px;">
+                {{ item.area.name if item.area else 'N/A' }} · {{ item.district.name if item.district else 'N/A' }} · ₹{{ item.rent }}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</center>
+
+{% if dist.latitude and dist.longitude %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const latitude = parseFloat('{{ dist.latitude }}');
+      const longitude = parseFloat('{{ dist.longitude }}');
+      const map = L.map('detail-map').setView([latitude, longitude], 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19,
+      }).addTo(map);
+      L.marker([latitude, longitude]).addTo(map)
+        .bindPopup('Property location')
+        .openPopup();
+    });
+  </script>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container" style="max-width: 1100px; margin: 40px auto;">
+    <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <h2 style="color: #20305E; margin-bottom: 15px;">Recommended Rooms</h2>
+        {% if prefs.preferred_state or prefs.preferred_district %}
+            <p style="color: #5a6978; margin-bottom: 8px;">Based on your recent searches and views, we recommend rooms from</p>
+            <p style="color: #334155; margin-bottom: 25px; font-weight:600;">
+                {% if prefs.preferred_district %}
+                    {{ prefs.preferred_district.name }}, {{ prefs.preferred_district.state.name }}
+                {% elif prefs.preferred_state %}
+                    {{ prefs.preferred_state.name }}
+                {% endif %}
+                {% if prefs.avg_rent_preference %} around ₹{{ prefs.avg_rent_preference|floatformat:0 }}{% endif %}
+            </p>
+        {% else %}
+            <p style="color: #5a6978; margin-bottom: 25px;">These listings are chosen based on your profile and the latest area data.</p>
+        {% endif %}
+        <div style="display: grid; gap: 20px;">
+            {% if rooms %}
+                {% for room in rooms %}
+                <div style="border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; display: grid; grid-template-columns: 280px 1fr; gap: 0;">
+                    <div style="min-height: 220px; background:#f8fafc;">
+                        {% if room.featured_image %}
+                        <img src="{{ room.featured_image.url }}" alt="{{ room.title }}" style="width:100%; height:220px; object-fit:cover;">
+                        {% endif %}
+                    </div>
+                    <div style="padding: 22px; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <h3 style="margin-top:0; color:#1f2937;">{{ room.title }}</h3>
+                            <p style="color:#4b5563; margin: 10px 0;">{{ room.description }}</p>
+                            <p style="color:#344e7a; font-weight:600;">Location: {{ room.address }}, {{ room.district.name }}, {{ room.state.name }}</p>
+                            <p style="color:#6b7280; margin: 8px 0;">
+                                <strong>Landlord:</strong> {{ room.landlord.get_full_name|default:room.landlord.username }}
+                                {% if room.landlord.profile.phone %}
+                                    | <strong>Phone:</strong> {{ room.landlord.profile.phone }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:20px;">
+                            <span style="font-size: 20px; font-weight:700; color:#111827;">₹{{ room.rent }}</span>
+                            <a href="{% url 'detail' room.id %}" style="padding: 10px 18px; background:#2f80ed; color:white; border-radius:10px; text-decoration:none;">View</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color:#4b5563;">No recommendations available yet. Add more listings or update your profile to improve recommendations.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

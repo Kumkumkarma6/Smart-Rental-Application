@@ -1,0 +1,130 @@
+{% extends 'navigation.html' %}
+{% block body %}
+
+<style>
+  .role-selection-container {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+  }
+
+  .role-selection-box {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 600px;
+    animation: fadeInUp 1s ease;
+  }
+
+  .role-selection-box h3 {
+    color: #20305E;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 28px;
+  }
+
+  hr {
+    border-top: 2px solid #2f80ed;
+    width: 80px;
+    margin: 0 auto 40px;
+  }
+
+  .role-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .role-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    padding: 40px 20px;
+    border: 2px solid #e3e3e3;
+    border-radius: 12px;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .role-btn:hover {
+    border-color: #2f80ed;
+    background: #e3f2fd;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(47, 128, 237, 0.3);
+  }
+
+  .role-btn i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #2f80ed;
+  }
+
+  .role-description {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 10px;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .role-buttons {
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .role-btn {
+      width: 100%;
+    }
+
+    .role-selection-box {
+      padding: 30px 20px;
+    }
+  }
+</style>
+
+<div class="role-selection-container">
+  <div class="role-selection-box">
+    <h3>Sign Up As</h3>
+    <hr>
+    <div class="role-buttons">
+      <a href="{% url 'signup_tenant' %}" class="role-btn">
+        🏘️
+        <span>Tenant</span>
+        <span class="role-description">Looking for rent</span>
+      </a>
+      <a href="{% url 'signup_landlord' %}" class="role-btn">
+        🏠
+        <span>Landlord</span>
+        <span class="role-description">Post properties</span>
+      </a>
+    </div>
+    <p style="margin-top: 30px; color: #7f8c8d;">
+      Already have an account? <a href="{% url 'signin_role' %}" style="color: #2f80ed; text-decoration: none; font-weight: 600;">Sign In</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

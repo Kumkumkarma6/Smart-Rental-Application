@@ -1,0 +1,116 @@
+{% extends 'navigation.html' %}
+{% block body %}
+
+<style>
+body {
+  background: linear-gradient(135deg, #eaf6ff, #ffffff);
+  font-family: 'Poppins', sans-serif;
+}
+
+.container h2 {
+  background-color: #20305E;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  letter-spacing: 1px;
+  margin-top: 30px;
+}
+
+.table {
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.table thead {
+  background-color: #20305E;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.table th, .table td {
+  text-align: center;
+  padding: 14px;
+  vertical-align: middle;
+  font-size: 15px;
+}
+
+.table tbody tr:hover {
+  background-color: #f0f7ff;
+  transform: scale(1.01);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Button Styles */
+.button {
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button2 {
+  background-color: #dc3545;
+}
+
+.button2:hover {
+  background-color: #a71d2a;
+  transform: scale(1.05);
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .container h2 {
+    font-size: 18px;
+  }
+}
+</style>
+
+<center>
+  <div class="container">
+    <h2>View District</h2>
+  </div>
+</center>
+
+<div class="container">
+  <table class="table table-bordered" width="100%" id="myTable">
+    <thead>
+      <tr>
+        <th>Serial No.</th>
+        <th>State Name</th>
+        <th>District Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in dist %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.state.state}}</td>
+        <td>{{i.dist}}</td>
+        <td>
+          <a href="{% url 'delete_dist' i.id %}">
+            <button class="button button2">Delete</button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

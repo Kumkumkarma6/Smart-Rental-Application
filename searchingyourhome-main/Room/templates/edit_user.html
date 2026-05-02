@@ -1,0 +1,162 @@
+{% extends 'navigation.html' %}
+{% block body %}
+<style>
+/* General reset and font */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #99DBF9 10%, #20305E 90%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  color: #333;
+}
+
+/* Header box */
+.container2 {
+  background-color: #20305E;
+  color: #fff;
+  width: 60%;
+  text-align: center;
+  border-radius: 12px 12px 0 0;
+  padding: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Main form container */
+.container {
+  width: 60%;
+  background: #fff;
+  border-radius: 0 0 12px 12px;
+  padding: 30px 40px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  animation: slideIn 0.6s ease-in-out;
+}
+
+/* Label styles */
+label {
+  font-weight: 600;
+  color: #20305E;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Input fields */
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #99DBF9;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: 0.3s ease;
+  outline: none;
+}
+
+input[type=text]:focus, textarea:focus {
+  border-color: #20305E;
+  box-shadow: 0 0 8px rgba(32,48,94,0.3);
+}
+
+/* Submit button */
+input[type=submit] {
+  background: #20305E;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: block;
+  margin: 30px auto 10px auto;
+}
+
+input[type=submit]:hover {
+  background: #162040;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(32,48,94,0.3);
+}
+
+/* Row and columns */
+.row {
+  margin-bottom: 18px;
+}
+
+.col-25 {
+  width: 100%;
+}
+
+.col-75 {
+  width: 100%;
+}
+
+/* Animation */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .container, .container2 {
+    width: 90%;
+    padding: 20px;
+  }
+  input[type=submit] {
+    width: 100%;
+  }
+}
+</style>
+
+{% if error %}
+<script>
+alert('Updated User Successfully');
+window.location='{% url 'view_user' %}';
+</script>
+{% endif %}
+
+<div class="container2">
+  <h3>Edit User Detail</h3>
+</div>
+
+<div class="container">
+  <form action="" method="post">
+      {% csrf_token %}
+      
+      <div class="row">
+        <label for="uname">Username</label>
+        <input type="text" id="uname" name="uname" value="{{data.user.username}}">
+      </div>
+
+      <div class="row">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="fname" value="{{data.user.first_name}}">
+      </div>
+
+      <div class="row">
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lname" value="{{data.user.last_name}}">
+      </div>
+
+      <div class="row">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" value="{{data.user.email}}">
+      </div>
+
+      <div class="row">
+        <label for="add">Address</label>
+        <input type="text" id="add" name="add" value="{{data.add}}">
+      </div>
+
+      <div class="row">
+        <label for="mobile">Mobile</label>
+        <input type="text" id="mobile" name="mobile" value="{{data.mobile}}">
+      </div>
+
+      <input type="submit" value="Submit">
+  </form>
+</div>
+{% endblock %}

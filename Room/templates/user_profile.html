@@ -1,0 +1,288 @@
+{% extends 'navigation.html' %}
+{% block body %}
+{% load static %}
+
+<div class="container">
+    <div class="profile-wrapper">
+        <div class="profile-header">
+            <div class="profile-cover"></div>
+            <div class="profile-avatar">
+                {% if user.userprofile.profile_picture %}
+                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <i class="fas fa-user-circle"></i>
+                {% endif %}
+            </div>
+            <h1 class="profile-name">{{ user.get_full_name|default:user.username }}</h1>
+            <p class="profile-joined">Member since: {{ user.date_joined|date:"F Y" }}</p>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-section">
+                <h3><i class="fas fa-user"></i> Personal Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Username</label>
+                        <p>{{ user.username }}</p>
+                    </div>
+                    <div class="info-item">
+                        <label>Email</label>
+                        <p>{{ user.email }}</p>
+                    </div>
+                    <div class="info-item">
+                        <label>Phone</label>
+                        <p>{{ user.userprofile.phone|default:"Not provided" }}</p>
+                    </div>
+                    <div class="info-item">
+                        <label>Location</label>
+                        <p>{{ user.userprofile.location|default:"Not provided" }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'edit_profile' %}" class="edit-profile-btn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </a>
+            </div>
+
+            {% if user_listings %}
+            <div class="profile-section">
+                <h3><i class="fas fa-home"></i> My Listings</h3>
+                <div class="listings-grid">
+                    {% for listing in user_listings %}
+                    <div class="listing-card">
+                        {% if listing.featured_image and listing.featured_image.url %}
+                            <img src="{{ listing.featured_image.url }}" alt="{{ listing.description }}">
+                        {% endif %}
+                        <div class="listing-info">
+                            <h4>{{ listing.description }}</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> {{ listing.address }}</p>
+                            <p><i class="fas fa-rupee-sign"></i> ₹{{ listing.rent }}/month</p>
+                            <a href="{% url 'detail' listing.id %}" class="view-listing-btn">View Details</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-wrapper {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.profile-header {
+    position: relative;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.profile-cover {
+    height: 200px;
+    background: linear-gradient(45deg, #FF3366, #FF6B6B, #4834d4, #686de0);
+    animation: gradientMove 8s ease infinite;
+    background-size: 300% 300%;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    margin: -75px auto 20px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-avatar i {
+    font-size: 100px;
+    color: #ddd;
+    line-height: 140px;
+}
+
+.profile-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #20305E;
+    margin: 0;
+}
+
+.profile-joined {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.profile-content {
+    padding: 30px;
+}
+
+.profile-section {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.profile-section h3 {
+    color: #20305E;
+    font-size: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-section h3 i {
+    color: #FF3366;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.info-item label {
+    color: #666;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.info-item p {
+    color: #333;
+    font-size: 16px;
+    margin: 0;
+}
+
+.edit-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(45deg, #FF3366, #FF6B6B);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 51, 102, 0.2);
+}
+
+.edit-profile-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 51, 102, 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.listing-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.listing-card:hover {
+    transform: translateY(-5px);
+}
+
+.listing-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.listing-info {
+    padding: 15px;
+}
+
+.listing-info h4 {
+    margin: 0 0 10px;
+    color: #20305E;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.listing-info p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.listing-info i {
+    margin-right: 5px;
+    color: #FF3366;
+}
+
+.view-listing-btn {
+    display: inline-block;
+    background: #20305E;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 13px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.view-listing-btn:hover {
+    background: #FF3366;
+    color: white;
+    text-decoration: none;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    .profile-wrapper {
+        margin: 15px;
+    }
+    
+    .profile-content {
+        padding: 15px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+<style>
+/* ===== Base Page Styling ===== */
+body {
+  background: linear-gradient(135deg, #20305E, #99DBF9);
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* ===== Title Section ===== */
+p[align="center"] {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  width: fit-content;
+  margin: 40px auto;
+  padding: 12px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* ===== Image Container ===== */
+.container {
+  width: 95%;
+  padding: 40px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  transition: all 0.5s ease;
+}
+
+/* ===== Image Card ===== */
+#samples {
+  text-align: center;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+#samples h3 {
+  color: #EE1D29;
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Image Style ===== */
+#samples img {
+  width: 250px;
+  height: 200px;
+  border-radius: 15px;
+  border: 3px solid #fff;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: all 0.6s ease;
+}
+
+#samples img:hover {
+  transform: scale(1.15);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.5);
+  border-color: #EE1D29;
+  z-index: 10;
+}
+
+/* ===== Change Image Link ===== */
+a[href*='change_img'] {
+  display: inline-block;
+  margin-top: 10px;
+  color: #EE1D29;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+a[href*='change_img']:hover {
+  color: #20305E;
+  text-decoration: underline;
+}
+
+/* ===== Property Info Section ===== */
+.jumbotron {
+  width: 80%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  padding: 40px;
+  margin: 40px auto;
+  text-align: center;
+  transition: all 0.4s ease;
+  color: #fff;
+}
+
+.jumbotron:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.jumbotron h4 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #fff;
+  margin: 12px 0;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  #samples img {
+    width: 200px;
+    height: 160px;
+  }
+
+  .jumbotron {
+    width: 90%;
+    padding: 25px;
+  }
+
+  p[align="center"] {
+    font-size: 18px;
+  }
+}
+
+  .ad-no-image {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 180px;
+    border-radius: 12px;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+</style>
+
+<p align="center">"Rented Home"</p>
+
+<div class="container">
+  <div class="row">
+    {% for i in img %}
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" id="samples">
+      <h3>{{ i.room_name }}<hr></h3>
+      {% if i.img and i.img.url %}
+        <img src="{{ i.img.url }}" alt="{{ i.room_name }}">
+      {% else %}
+        <div class="ad-no-image">No Image</div>
+      {% endif %}
+      {% if not request.user.is_staff %}
+      <a href="{% url 'change_img' i.id %}">Change Image</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<center>
+  <div class="jumbotron">
+    <h4>{{ dist.desc }}</h4>
+    <h4>Area: {{ dist.area }}</h4>
+    <h4>Rent : {{ dist.rent }} / month</h4>
+    <h4>Contact : {{ dist.register.mobile }}</h4>
+    <h4>Local Address : {{ dist.local_add }}</h4>
+    {% if dist.latitude and dist.longitude %}
+      <h4><a href="https://www.google.com/maps/search/?api=1&query={{ dist.latitude }},{{ dist.longitude }}" target="_blank" style="color:#ffd700; text-decoration:underline;">View on Google Maps</a></h4>
+    {% else %}
+      <h4><a href="https://www.google.com/maps/search/?api=1&query={{ dist.local_add|urlencode }}+{{ dist.area|urlencode }}+{{ dist.dist.dist|urlencode }}+{{ dist.state.state|urlencode }}" target="_blank" style="color:#ffd700; text-decoration:underline;">Search on Google Maps</a></h4>
+    {% endif %}
+  </div>
+</center>
+
+{% endblock %}

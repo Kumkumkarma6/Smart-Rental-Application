@@ -1,0 +1,265 @@
+{% extends 'navigation.html' %}
+{% block body %}
+<style>
+/* 🌈 Global Reset & Font */
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #d0e8ff, #a5d8ff);
+  margin: 0;
+  padding: 0;
+}
+
+/* 🏠 Page Title */
+.container2 {
+  width: 60%;
+  background: linear-gradient(90deg, #20305E, #3a5ba0);
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 40px auto 20px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.container2:hover {
+  transform: scale(1.02);
+}
+
+/* 📦 Form Container */
+.container {
+  width: 60%;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 40px 50px;
+  margin: 0 auto 60px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+}
+
+.container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* 🏷️ Labels */
+label {
+  font-weight: 600;
+  color: #20305E;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+/* ✏️ Inputs */
+input[type=text],
+input[type=number],
+input[type=file],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #20305E;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(32, 48, 94, 0.4);
+  outline: none;
+}
+
+/* 🧭 Buttons */
+#id1, #id2 {
+  background: linear-gradient(90deg, #20305E, #3a5ba0);
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(32, 48, 94, 0.3);
+}
+
+#id1 {
+  display: block;
+  margin: 30px auto 0;
+}
+
+#id2 {
+  float: right;
+  margin-top: -5px;
+}
+
+#id1:hover,
+#id2:hover {
+  background: linear-gradient(90deg, #3a5ba0, #20305E);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(32, 48, 94, 0.4);
+}
+
+/* 📏 Form Rows */
+.row {
+  margin-bottom: 18px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 5px;
+}
+
+/* 🔄 Clearfix */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* 📱 Responsive */
+@media screen and (max-width: 768px) {
+  .container, .container2 {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .col-25, .col-75 {
+    width: 100%;
+  }
+
+  #id2 {
+    float: none;
+    display: block;
+    margin: 10px auto;
+  }
+
+  #id1 {
+    width: 80%;
+  }
+}
+</style>
+
+{% if error %}
+<script>
+  alert('Updated Room Detail Successfully');
+  window.location='{% url 'img' %}';
+</script>
+{% endif %}
+
+<center>
+  <div class="container2">
+    <h3>🛠️ Edit Home Detail</h3>
+  </div>
+</center>
+
+<div class="container">
+  <form action="{% url 'edit_detail1' data.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-25">
+        <label for="country">State</label>
+      </div>
+      <div class="col-75">
+        <select id="country" name="state">
+          {% for i in state %}
+            {% if i.state != st.state %}
+              <option value="{{i.state}}">{{i.state}}</option>
+            {% else %}
+              {% if i.state == data.state.state %}
+                <option value="{{data.state.state}}" selected>{{data.state.state}}</option>
+              {% else %}
+                <option value="{{st.state}}" selected>{{st.state}}</option>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <input id="id2" type="submit" value="Search 🔍">
+    </div>
+  </form>
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-25">
+        <label for="country">District</label>
+      </div>
+      <div class="col-75">
+        <select id="country" name="dist">
+          {% for i in dist %}
+            {% if i.dist != data.dist.dist %}
+              <option value="{{i.dist}}">{{i.dist}}</option>
+            {% else %}
+              <option value="{{data.dist.dist}}" selected>{{data.dist.dist}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Area / Neighborhood</label></div>
+      <div class="col-75"><input type="text" name="area" value="{{data.area}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="fname">Local Address</label></div>
+      <div class="col-75"><input type="text" name="local" value="{{data.local_add}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Latitude</label></div>
+      <div class="col-75"><input type="text" name="latitude" value="{{data.latitude}}"></div>
+    </div>
+    <div class="row">
+      <div class="col-25"><label for="lname">Longitude</label></div>
+      <div class="col-75"><input type="text" name="longitude" value="{{data.longitude}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Title</label></div>
+      <div class="col-75"><input type="text" name="title" value="{{data.title}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Description</label></div>
+      <div class="col-75"><input type="text" name="desc" value="{{data.desc}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Rent</label></div>
+      <div class="col-75"><input type="number" name="rent" value="{{data.rent}}"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-25"><label for="lname">Image</label></div>
+      <div class="col-75"><input type="file" name="img">{{data.img}}</div>
+    </div>
+
+    <div class="row">
+      <input id="id1" type="submit" value="💾 Update Details">
+    </div>
+  </form>
+</div>
+{% endblock %}

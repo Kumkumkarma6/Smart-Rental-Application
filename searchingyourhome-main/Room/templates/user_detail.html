@@ -1,0 +1,164 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+body {
+  background: linear-gradient(135deg, #e8f4ff, #ffffff);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Title Bar */
+.profile-header {
+  background-color: #20305E;
+  color: #fff;
+  width: 60%;
+  margin: 40px auto 20px auto;
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  letter-spacing: 1px;
+}
+
+/* Profile Card */
+.profile-card {
+  background-color: #ffffff;
+  margin: auto;
+  width: 60%;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+/* Image styling */
+.profile-img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #99DBF9;
+  margin-top: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(153, 219, 249, 0.8);
+}
+
+/* Name section */
+.profile-name {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 15px;
+  color: #20305E;
+}
+
+/* Info section */
+.profile-info {
+  padding: 25px 40px;
+}
+
+.profile-info p {
+  font-size: 16px;
+  color: #333;
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+}
+
+.profile-info i {
+  background-color: #20305E;
+  color: #fff;
+  padding: 8px;
+  border-radius: 50%;
+  margin-right: 15px;
+  font-size: 14px;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  line-height: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.profile-info i:hover {
+  background-color: #99DBF9;
+  color: #20305E;
+}
+
+/* Divider line */
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-card, .profile-header {
+    width: 90%;
+  }
+  .profile-info {
+    padding: 20px;
+  }
+}
+
+  .user-no-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #f3f4f7;
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+    padding: 3px;
+    box-sizing: border-box;
+    border: 3px solid #20305E;
+  }
+</style>
+
+<!-- Header -->
+<div class="profile-header">
+  <i class="fa fa-user-circle"></i> Your Profile Details
+</div>
+
+<!-- Profile Card -->
+<div class="profile-card">
+  <div align="center">
+    {% if register.user.userprofile.profile_picture and register.user.userprofile.profile_picture.url %}
+      <img src="{{register.user.userprofile.profile_picture.url}}" alt="Avatar" class="profile-img">
+    {% else %}
+      <div class="user-no-avatar">No Avatar</div>
+    {% endif %}
+    <div class="profile-name">{{register.user.first_name}} {{register.user.last_name}}</div>
+  </div>
+
+  <hr>
+
+  <div class="profile-info">
+    <p><i class="fa fa-briefcase"></i> User Profile</p>
+    <p><i class="fa fa-home"></i> {{register.add}}</p>
+    <p><i class="fa fa-envelope"></i> {{register.user.email}}</p>
+    <p><i class="fa fa-phone"></i> {{register.mobile}}</p>
+  </div>
+</div>
+{% endblock %}
